@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oscar Ribichini — Advisor per Imprenditori | Quantum Advisor</title>
+  <meta name="description" content="Non sono un consulente. Sono l'advisor che affianca l'imprenditore prima delle decisioni che contano. 25 anni di campo. Civitanova Marche, tutta Italia.">
+  <link rel="canonical" href="https://oscar-ribichini.it">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --nero:  #080c14;
+      --blu:   #1a3a6e;
+      --blu-m: #0d1f3e;
+      --oro:   #c9a96e;
+      --oro-c: #e0c898;
+      --grigio:#f6f5f2;
+      --testo: #1a1a2e;
+      --medio: #4a5568;
+      --muted: #7a90b0;
+    }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'DM Sans',system-ui,sans-serif;
+      color:var(--testo); background:#fff;
+      font-size:18px; line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:300;
+      height:62px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 6%;
+      background:rgba(8,12,20,0.97); backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(201,169,110,0.15);
+    }
+    .nav-logo { font-family:'Playfair Display',serif; font-size:1.05rem; color:#fff; text-decoration:none; }
+    .nav-logo span { color:var(--oro); }
+    .nav-dx { display:flex; align-items:center; gap:12px; }
+
+    /* Bottone audio */
+    .audio-btn {
+      width:38px; height:38px; border-radius:50%;
+      background:rgba(201,169,110,0.1); border:1px solid rgba(201,169,110,0.3);
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all 0.3s; color:rgba(201,169,110,0.6);
+      position:relative;
+    }
+    .audio-btn:hover { background:rgba(201,169,110,0.2); color:var(--oro); border-color:var(--oro); }
+    .audio-btn.on { background:rgba(201,169,110,0.18); border-color:var(--oro); color:var(--oro); }
+    .audio-btn.on::after {
+      content:''; position:absolute; inset:-4px; border-radius:50%;
+      border:1px solid rgba(201,169,110,0.3);
+      animation:pulsa 2s ease infinite;
+    }
+    @keyframes pulsa {
+      0%,100%{ transform:scale(1); opacity:0.6; }
+      50%{ transform:scale(1.18); opacity:0; }
+    }
+
+    /* Selettore brano — area cliccabile 28px, pallino visivo 7px */
+    .audio-dots { display:flex; align-items:center; margin-right:-4px; }
+    .dot {
+      width:28px; height:28px; border:none; cursor:pointer; background:transparent;
+      padding:0; display:flex; align-items:center; justify-content:center; position:relative;
+    }
+    .dot::after {
+      content:''; width:7px; height:7px; border-radius:50%;
+      background:rgba(201,169,110,0.28); transition:all 0.25s;
+    }
+    .dot:hover::after { background:rgba(201,169,110,0.55); }
+    .dot.attivo::after { background:var(--oro); box-shadow:0 0 0 3px rgba(201,169,110,0.18); }
+
+    .nav-cta {
+      background:var(--oro); color:var(--nero);
+      padding:10px 26px; font-size:0.78rem; font-weight:500;
+      letter-spacing:1px; text-transform:uppercase; text-decoration:none;
+      transition:background 0.2s,transform 0.2s;
+    }
+    .nav-cta:hover { background:var(--oro-c); transform:translateY(-1px); }
+
+    /* Nav — telefoni stretti: niente sovrapposizioni */
+    @media(max-width:640px){
+      .nav-logo { font-size:0.86rem; }
+      .nav-logo span { display:none; }
+      .audio-dots { display:none; }
+      .nav-dx { gap:8px; }
+      .nav-cta { padding:9px 16px; font-size:0.66rem; letter-spacing:0.8px; }
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height:100vh; background:var(--nero);
+      display:flex; flex-direction:column; justify-content:center;
+      padding:110px 6% 80px; position:relative; overflow:hidden;
+    }
+    .hero-griglia {
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(90deg,rgba(201,169,110,0.022) 0,rgba(201,169,110,0.022) 1px,transparent 1px,transparent 80px),
+        repeating-linear-gradient(0deg, rgba(201,169,110,0.022) 0,rgba(201,169,110,0.022) 1px,transparent 1px,transparent 80px);
+      pointer-events:none;
+    }
+    .hero-glow {
+      position:absolute; top:-20%; right:-10%; width:60%; height:120%;
+      background:radial-gradient(ellipse,rgba(201,169,110,0.07) 0%,transparent 65%);
+      pointer-events:none;
+    }
+    .hero-inner {
+      position:relative; z-index:1;
+      max-width:1100px; margin:0 auto; width:100%;
+      display:grid; grid-template-columns:1.1fr 0.9fr; gap:80px; align-items:center;
+    }
+    .hero-chip {
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:0.68rem; letter-spacing:3.5px; text-transform:uppercase;
+      color:var(--oro); margin-bottom:28px;
+    }
+    .hero-chip::before { content:''; width:22px; height:1px; background:var(--oro); }
+
+    .hero-domanda-wrap { margin-bottom:36px; min-height:130px; }
+    .hero-domanda {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2rem,4.2vw,3.4rem);
+      color:#fff; line-height:1.2; font-weight:400;
+    }
+    .hero-cursor {
+      display:inline-block; width:3px; height:0.85em;
+      background:var(--oro); margin-left:4px;
+      animation:lamp 0.9s infinite; vertical-align:middle;
+    }
+    @keyframes lamp { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+    .hero-risposta {
+      font-size:1.05rem; color:var(--muted);
+      line-height:1.85; margin-bottom:48px; font-weight:300; max-width:500px;
+    }
+    .hero-risposta strong { color:#fff; font-weight:500; }
+    .hero-btns { display:flex; gap:14px; flex-wrap:nowrap; align-items:center; }
+
+    .btn-oro {
+      background:var(--oro); color:var(--nero);
+      padding:15px 32px; font-size:0.72rem; font-weight:500;
+      letter-spacing:2px; text-transform:uppercase; white-space:nowrap;
+      text-decoration:none; border:none; cursor:pointer;
+      transition:all 0.28s; display:inline-block;
+      position:relative; overflow:hidden;
+    }
+    .btn-oro::after {
+      content:''; position:absolute; inset:0;
+      background:rgba(255,255,255,0); transition:background 0.28s;
+    }
+    .btn-oro:hover { background:var(--oro-c); transform:translateY(-2px); box-shadow:0 10px 34px rgba(201,169,110,0.28); }
+    .btn-ghost {
+      background:transparent; color:rgba(255,255,255,0.55);
+      padding:15px 32px; font-size:0.72rem; font-weight:400;
+      letter-spacing:2px; text-transform:uppercase; white-space:nowrap;
+      text-decoration:none; border:1px solid rgba(201,169,110,0.28);
+      transition:all 0.28s; display:inline-block;
+    }
+    .btn-ghost:hover { border-color:var(--oro); color:var(--oro); }
+
+    .hero-foto-wrap { position:relative; max-width:360px; margin:0 auto; }
+    .hero-foto-wrap::before {
+      content:''; position:absolute; top:20px; right:-20px;
+      width:100%; height:100%; border:2px solid rgba(201,169,110,0.3); z-index:0;
+    }
+    .hero-foto { width:100%; display:block; position:relative; z-index:1; border:3px solid rgba(201,169,110,0.2); }
+    .hero-badge {
+      position:absolute; bottom:-28px; left:-14px; z-index:2;
+      background:rgba(8,12,20,0.94); color:var(--oro-c);
+      border:1px solid rgba(201,169,110,0.32);
+      border-left:3px solid var(--oro);
+      padding:18px 22px 18px 20px;
+      font-family:'Playfair Display',serif; font-size:0.85rem; font-style:italic;
+      max-width:250px; line-height:1.6;
+      box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    }
+    .hero-badge::before {
+      content:'\201C';
+      display:block; font-size:2.4rem; line-height:0.6;
+      color:rgba(201,169,110,0.3); margin-bottom:8px;
+      font-style:normal;
+    }
+
+    /* ─── STRISCIA ─── */
+    .striscia {
+      background:var(--oro); padding:20px 6%;
+      display:flex; justify-content:center; gap:72px; align-items:center; flex-wrap:wrap;
+    }
+    .dato { display:flex; align-items:center; gap:14px; }
+    .dato-n { font-family:'Playfair Display',serif; font-size:2.4rem; color:var(--nero); line-height:1; }
+    .dato-l { font-size:0.72rem; color:var(--nero); text-transform:uppercase; letter-spacing:0.5px; opacity:0.72; max-width:120px; line-height:1.4; }
+    .dato-sep { width:1px; height:36px; background:rgba(8,12,20,0.15); }
+
+    /* ─── BASE ─── */
+    section { padding:96px 6%; }
+    .max { max-width:1000px; margin:0 auto; }
+    .etichetta {
+      font-size:0.68rem; letter-spacing:4px; text-transform:uppercase;
+      color:var(--oro); margin-bottom:22px; display:flex; align-items:center; gap:12px;
+    }
+    .etichetta::before { content:''; width:22px; height:1px; background:var(--oro); }
+    h2 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.9rem,3.4vw,2.9rem);
+      color:var(--blu); line-height:1.2; margin-bottom:20px; font-weight:400;
+    }
+    .linea { width:44px; height:3px; background:var(--oro); margin-bottom:40px; }
+    .tm { font-size:1rem; color:var(--medio); line-height:1.9; max-width:680px; margin-bottom:22px; }
+    .tm strong { color:var(--testo); font-weight:500; }
+
+    /* ─── MANIFESTO ─── */
+    #manifesto { background:var(--grigio); }
+    .tre { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:#ddd; margin-top:52px; }
+    .col { background:#fff; padding:40px 30px; border-top:3px solid transparent; transition:border-color 0.2s; }
+    .col:hover { border-top-color:var(--oro); }
+    .col-n { font-family:'Playfair Display',serif; font-size:3.2rem; color:rgba(201,169,110,0.16); line-height:1; margin-bottom:16px; }
+    .col-t { font-family:'Playfair Display',serif; font-size:1.12rem; color:var(--blu); margin-bottom:10px; }
+    .col-p { font-size:0.9rem; color:var(--medio); line-height:1.75; }
+
+    /* ─── FRASE MANIFESTO ─── */
+    #frase-manifesto {
+      background:var(--blu-m); padding:80px 6%; text-align:center;
+    }
+    .frase-grande {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.6rem,3.5vw,2.6rem);
+      color:#fff; line-height:1.4; font-weight:400; font-style:italic;
+      max-width:780px; margin:0 auto;
+    }
+    .frase-grande em { color:var(--oro); font-style:normal; }
+    .frase-firma {
+      font-family:'DM Sans',sans-serif; font-size:0.75rem;
+      color:rgba(201,169,110,0.5); letter-spacing:3px; text-transform:uppercase;
+      margin-top:28px;
+    }
+
+    /* ─── STORIA + TIMELINE ─── */
+    #storia { background:var(--nero); }
+    #storia h2 { color:#fff; }
+    #storia h2 em { font-style:italic; color:var(--oro); }
+    .storia-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+    .tc { font-size:0.98rem; color:var(--muted); line-height:1.9; font-weight:300; margin-bottom:20px; }
+    .tc strong { color:#fff; font-weight:500; }
+    .tc em { color:var(--oro); font-style:italic; }
+    .tag { display:inline-block; background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.22); color:var(--oro); font-size:0.7rem; letter-spacing:1.5px; text-transform:uppercase; padding:6px 14px; margin:0 8px 8px 0; }
+
+    .timeline { display:flex; flex-direction:column; gap:0; }
+    .tl-item { display:flex; gap:20px; padding-bottom:28px; position:relative; }
+    .tl-item:not(:last-child)::after { content:''; position:absolute; left:86px; top:40px; bottom:0; width:1px; background:rgba(201,169,110,0.18); }
+    .tl-anno { min-width:66px; font-family:'Playfair Display',serif; font-size:0.85rem; color:var(--oro); line-height:1; padding-top:4px; text-align:right; }
+    .tl-dot { width:12px; height:12px; min-width:12px; border:2px solid var(--oro); border-radius:50%; margin-top:4px; background:var(--nero); }
+    .tl-testo { font-size:0.9rem; color:var(--muted); line-height:1.7; }
+    .tl-testo strong { color:#fff; font-weight:500; }
+
+    /* ─── AI DEMO ─── */
+    #ai-demo { background:var(--blu); }
+    #ai-demo h2 { color:#fff; }
+    #ai-demo h2 em { font-style:italic; color:var(--oro); }
+    .ai-intro { font-size:1rem; color:var(--muted); line-height:1.85; max-width:720px; margin-bottom:52px; font-weight:300; }
+    .ai-intro strong { color:#fff; font-weight:500; }
+
+    .ai-tabs { display:flex; gap:2px; flex-wrap:wrap; }
+    .ai-tab {
+      background:rgba(255,255,255,0.06); border:none; cursor:pointer;
+      color:var(--muted); font-family:'DM Sans',sans-serif; font-size:0.76rem;
+      letter-spacing:1px; text-transform:uppercase; padding:12px 20px; transition:all 0.2s;
+    }
+    .ai-tab:hover { color:#fff; background:rgba(255,255,255,0.1); }
+    .ai-tab.attivo { background:rgba(201,169,110,0.15); color:var(--oro); border-bottom:2px solid var(--oro); }
+
+    .ai-scenario { display:none; background:rgba(0,0,0,0.25); padding:40px; margin-top:2px; }
+    .ai-scenario.attivo { display:block; }
+
+    .chat { display:flex; flex-direction:column; gap:20px; }
+    .chat-msg { display:flex; gap:14px; align-items:flex-start; }
+    .chat-avatar { width:38px; height:38px; min-width:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:0.9rem; font-weight:700; }
+    .av-imp { background:rgba(255,255,255,0.1); color:#fff; }
+    .av-ai  { background:rgba(255,255,255,0.06); color:var(--muted); font-size:0.6rem; letter-spacing:1px; font-family:'DM Sans',sans-serif; }
+    .av-or  { background:var(--oro); color:var(--nero); font-size:0.72rem; letter-spacing:1px; font-family:'DM Sans',sans-serif; }
+    .chat-bolla { flex:1; }
+    .chat-chi { font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+    .chi-imp { color:rgba(255,255,255,0.38); }
+    .chi-ai  { color:var(--muted); }
+    .chi-or  { color:var(--oro); }
+    .chat-testo { font-size:0.92rem; line-height:1.75; padding:16px 20px; }
+    .bg-imp { background:rgba(255,255,255,0.05); color:#cdd; }
+    .bg-ai  { background:rgba(255,255,255,0.04); color:var(--muted); border-left:3px solid rgba(255,255,255,0.08); }
+    .bg-or  { background:rgba(201,169,110,0.1); color:#e0d0b0; border-left:3px solid var(--oro); }
+    .bias-badge { display:inline-block; margin-top:10px; background:rgba(201,169,110,0.2); border:1px solid rgba(201,169,110,0.4); color:var(--oro); font-size:0.68rem; letter-spacing:1.5px; text-transform:uppercase; padding:5px 12px; }
+
+    /* ─── CASO STUDIO ─── */
+    #caso { background:var(--grigio); }
+    .caso-box {
+      background:#fff; border-left:4px solid var(--oro);
+      padding:44px 44px 44px 40px; max-width:800px;
+      box-shadow:0 4px 32px rgba(26,58,110,0.07);
+    }
+    .caso-label { font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--oro); margin-bottom:20px; }
+    .caso-titolo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--blu); margin-bottom:24px; }
+    .caso-testo { font-size:0.95rem; color:var(--medio); line-height:1.85; margin-bottom:14px; }
+    .caso-testo strong { color:var(--testo); font-weight:500; }
+    .caso-numero {
+      display:inline-block; background:var(--blu); color:var(--oro);
+      font-family:'Playfair Display',serif; font-size:1.5rem;
+      padding:12px 20px; margin-top:12px;
+    }
+    .caso-nota { font-size:0.78rem; color:#aaa; margin-top:8px; font-style:italic; }
+
+    /* ─── COME LAVORO ─── */
+    #come-lavoro { background:#fff; }
+    .passi { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:#ddd; margin-top:52px; }
+    .passo { background:var(--grigio); padding:44px 30px; position:relative; }
+    .passo:not(:last-child)::after { content:'→'; position:absolute; top:44px; right:-16px; z-index:1; font-size:1.2rem; color:rgba(201,169,110,0.4); background:var(--grigio); padding:0 4px; }
+    .passo-n { font-family:'Playfair Display',serif; font-size:3.4rem; color:rgba(201,169,110,0.13); line-height:1; margin-bottom:14px; }
+    .passo-t { font-family:'Playfair Display',serif; font-size:1.12rem; color:var(--blu); margin-bottom:10px; }
+    .passo-p { font-size:0.9rem; color:var(--medio); line-height:1.75; }
+
+    /* ─── AREE ─── */
+    #aree { background:var(--grigio); }
+    .aree-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:52px; }
+    .area { background:#fff; border:1px solid #eaecf0; border-top:3px solid var(--oro); padding:36px 28px; transition:all 0.3s; }
+    .area:hover { box-shadow:0 14px 44px rgba(26,58,110,0.1); transform:translateY(-4px); }
+    .area-i { width:42px; height:42px; background:rgba(26,58,110,0.05); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+    .area-t { font-family:'Playfair Display',serif; font-size:1.12rem; color:var(--blu); margin-bottom:10px; }
+    .area-p { font-size:0.88rem; color:var(--medio); line-height:1.7; margin-bottom:18px; }
+    .area-list { list-style:none; }
+    .area-list li { font-size:0.8rem; color:var(--medio); padding:6px 0; border-bottom:1px solid #f2f2f2; display:flex; align-items:center; gap:8px; }
+    .area-list li::before { content:'›'; color:var(--oro); font-size:1rem; font-weight:bold; }
+
+    /* ─── CONTATTI ─── */
+    #contatti { background:var(--nero); text-align:center; padding:120px 6%; }
+    #contatti .etichetta { justify-content:center; color:rgba(201,169,110,0.42); }
+    #contatti h2 { color:#fff; }
+    #contatti h2 em { font-style:italic; color:var(--oro); }
+    .c-sub { font-size:1rem; color:var(--muted); margin-bottom:52px; font-weight:300; max-width:520px; margin-left:auto; margin-right:auto; }
+    .c-btns { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:52px; }
+    .c-dati { display:flex; gap:44px; justify-content:center; flex-wrap:wrap; }
+    .c-dato { font-size:0.86rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:8px; transition:color 0.2s; }
+    .c-dato:hover { color:var(--oro); }
+
+    /* ─── FOOTER ─── */
+    footer { background:#020509; padding:24px 6%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+    .f-t { font-size:0.74rem; color:#1e2a3a; }
+    .f-l { font-size:0.74rem; color:#1e2a3a; text-decoration:none; transition:color 0.2s; }
+    .f-l:hover { color:var(--oro); }
+
+    /* ─── SCROLL REVEAL ─── */
+    .a { opacity:0; transform:translateY(20px); transition:opacity 0.65s ease,transform 0.65s ease; }
+    .a.v { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:0.1s; }
+    .d2 { transition-delay:0.2s; }
+    .d3 { transition-delay:0.3s; }
+
+    /* ─── MOBILE ─── */
+    @media(max-width:820px){
+      .hero-inner { grid-template-columns:1fr; gap:48px; }
+      .hero-foto-wrap { max-width:260px; order:-1; }
+      .hero-badge { display:none; }
+      .storia-grid { grid-template-columns:1fr; gap:44px; }
+      .tre,.passi { grid-template-columns:1fr; gap:2px; }
+      .passo::after { display:none; }
+      .aree-grid { grid-template-columns:1fr; }
+      .striscia { gap:28px; }
+      .dato-sep { display:none; }
+      .c-dati { flex-direction:column; align-items:center; gap:16px; }
+      .ai-scenario { padding:20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Oscar Ribichini <span>· Advisor</span></a>
+  <div class="nav-dx">
+    <div class="audio-dots">
+      <button class="dot attivo" id="dot-0" onclick="scegliBrano(0)" title="Chopin — Notturno op. 48 n.1" aria-label="Chopin — Notturno op. 48 n.1" aria-pressed="true"></button>
+      <button class="dot" id="dot-1" onclick="scegliBrano(1)" title="Debussy — Clair de Lune" aria-label="Debussy — Clair de Lune" aria-pressed="false"></button>
+    </div>
+    <button class="audio-btn" id="audio-btn" onclick="toggleAudio()" title="Attiva la musica" aria-label="Musica di sottofondo" aria-pressed="false">
+      <svg id="icon-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+      <svg id="icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      </svg>
+    </button>
+    <a href="#contatti" class="nav-cta">Parliamoci</a>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-griglia"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-testo">
+      <p class="hero-chip">Quantum Advisor · Civitanova Marche</p>
+      <div class="hero-domanda-wrap">
+        <span class="hero-domanda" id="hero-domanda"></span><span class="hero-cursor"></span>
+      </div>
+      <p class="hero-risposta">
+        Faccio questo.<br>
+        <strong>Per gli imprenditori che preferiscono la verità alle buone notizie.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="https://calendly.com/globalarea/30min" target="_blank" class="btn-oro">Prenota il primo incontro</a>
+        <a href="#storia" class="btn-ghost">Chi sono davvero →</a>
+      </div>
+    </div>
+    <div class="hero-foto-wrap">
+      <img src="foto-oscar.jpg" alt="Oscar Ribichini" class="hero-foto">
+      <div class="hero-badge">"Di un advisor che non ha mai sbagliato non puoi fidarti."</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- STRISCIA -->
+<div class="striscia">
+  <div class="dato"><span class="dato-n">25+</span><span class="dato-l">anni sul campo</span></div>
+  <div class="dato-sep"></div>
+  <div class="dato"><span class="dato-n">PMI</span><span class="dato-l">italiane affiancate</span></div>
+  <div class="dato-sep"></div>
+  <div class="dato"><span class="dato-n">1</span><span class="dato-l">principio: la verità prima</span></div>
+</div>
+
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="max">
+    <p class="etichetta a">Il metodo</p>
+    <h2 class="a">Il consulente viene dopo il problema.<br>
+      L'advisor è lì <em style="font-style:italic;color:var(--oro)">prima.</em></h2>
+    <div class="linea a"></div>
+    <p class="tm a">Il tuo commercialista registra quello che è già successo.
+      Il tuo avvocato interviene quando la firma è già data.
+      <strong>L'advisor affianca l'imprenditore nel momento che conta:</strong>
+      prima di firmare, prima di investire, prima di fidarsi di qualcuno.</p>
+    <p class="tm a">Non è una consulenza. È una relazione.
+      La chiami quando devi decidere qualcosa di importante
+      e vuoi <strong>qualcuno che ti dica quello che pensa davvero</strong> — non quello che vuoi sentire.</p>
+    <div class="tre">
+      <div class="col a d1">
+        <div class="col-n">01</div>
+        <div class="col-t">Ascolta</div>
+        <p class="col-p">Prima di tutto, capisce il tuo contesto. Non il tuo bilancio — il tuo contesto. Cosa stai costruendo, cosa ti spaventa, dove vuoi arrivare.</p>
+      </div>
+      <div class="col a d2">
+        <div class="col-n">02</div>
+        <div class="col-t">Vede prima</div>
+        <p class="col-p">Riconosce i segnali prima che diventino problemi. Non perché è più intelligente — perché li ha già visti su se stesso e sugli altri.</p>
+      </div>
+      <div class="col a d3">
+        <div class="col-n">03</div>
+        <div class="col-t">Rimane</div>
+        <p class="col-p">Non sparisce dopo aver consegnato il report. È il numero che chiami quando una cosa non torna. Prima, durante, dopo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FRASE MANIFESTO ISOLATA -->
+<div id="frase-manifesto" class="a">
+  <p class="frase-grande">
+    "Di un advisor che non ha mai sbagliato<br>
+    <em>non puoi fidarti.</em>"
+  </p>
+  <p class="frase-firma">— Oscar Ribichini</p>
+</div>
+
+
+<!-- STORIA + TIMELINE -->
+<section id="storia">
+  <div class="max">
+    <div class="storia-grid">
+      <div>
+        <p class="etichetta a" style="color:rgba(201,169,110,0.55)">Chi sono</p>
+        <h2 class="a">Ho sbagliato abbastanza<br>per essere <em>utile.</em></h2>
+        <div class="linea a" style="background:rgba(201,169,110,0.45)"></div>
+        <p class="tc a">Ho costruito aziende da zero.
+          Ho firmato fideiussioni che mi inseguono ancora oggi.
+          Ho prestato <strong>denaro a qualcuno di cui mi fidavo</strong> — con la carta scritta in mano.
+          Ho ceduto quote su consiglio di altri, tenendo il rischio tutto in mano.</p>
+        <p class="tc a">Non te lo racconto per impressionarti.
+          Te lo racconto perché <em>è così che si impara davvero</em> come funziona il rischio.
+          Non sui libri. Sulla propria pelle.</p>
+        <p class="tc a">Oggi affianco imprenditori che vogliono evitare quegli errori.
+          O che li hanno già fatti e devono uscirne.
+          <strong>Non giudico. Analizzo. Propongo. Rimango.</strong></p>
+        <div class="a" style="margin-top:28px">
+          <span class="tag">Imprenditore</span>
+          <span class="tag">Advisor AI</span>
+          <span class="tag">Quantum S.r.l.</span>
+          <span class="tag">25 anni sul campo</span>
+        </div>
+      </div>
+      <div>
+        <div class="timeline">
+          <div class="tl-item a">
+            <div class="tl-anno">2000</div>
+            <div class="tl-dot"></div>
+            <div class="tl-testo"><strong>Prima azienda costruita da zero.</strong><br>L'entusiasmo del principiante — e tutti gli errori che porta con sé.</div>
+          </div>
+          <div class="tl-item a d1">
+            <div class="tl-anno">2005</div>
+            <div class="tl-dot"></div>
+            <div class="tl-testo"><strong>Fideiussione su consiglio altrui.</strong><br>Struttura "furba" che lasciava il rischio in mano a me. Mi insegue ancora.</div>
+          </div>
+          <div class="tl-item a d2">
+            <div class="tl-anno">2018</div>
+            <div class="tl-dot"></div>
+            <div class="tl-testo"><strong>Soldi prestati alla persona sbagliata.</strong><br>Con una scrittura privata in mano. Non è bastata. Lezione pagata cara.</div>
+          </div>
+          <div class="tl-item a d3">
+            <div class="tl-anno">2022</div>
+            <div class="tl-dot" style="border-color:var(--oro-c)"></div>
+            <div class="tl-testo"><strong>Nasce il metodo.</strong><br>La capacità di leggere quando qualcosa non torna — prima che diventi un problema.</div>
+          </div>
+          <div class="tl-item a">
+            <div class="tl-anno">2024</div>
+            <div class="tl-dot" style="background:var(--oro);border-color:var(--oro)"></div>
+            <div class="tl-testo"><strong>Quantum Advisor.</strong><br>Tutto quello che ho imparato, messo al servizio degli imprenditori che decidono.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AI DEMO -->
+<section id="ai-demo">
+  <div class="max">
+    <p class="etichetta a">Il differenziante</p>
+    <h2 class="a">L'AI ti sta <em>mentendo.</em><br>Guarda com'è fatto dal vivo.</h2>
+    <p class="ai-intro a">Ogni giorno milioni di imprenditori usano l'AI per prendere decisioni aziendali.
+      <strong>La maggior parte non sa che l'AI produce risposte plausibili anche quando sbaglia.</strong>
+      Ho individuato 10 pattern ricorrenti. Eccone tre. Clicca e vedi.</p>
+
+    <div class="ai-tabs a">
+      <button class="ai-tab attivo" onclick="mostraScenario(0,this)">Bias #1 — Risposta senza dati</button>
+      <button class="ai-tab" onclick="mostraScenario(1,this)">Bias #2 — Brutte notizie in mezzo</button>
+      <button class="ai-tab" onclick="mostraScenario(2,this)">Bias #3 — Cede sotto pressione</button>
+    </div>
+
+    <div class="ai-scenario attivo" id="sc0">
+      <div class="chat">
+        <div class="chat-msg"><div class="chat-avatar av-imp">I</div><div class="chat-bolla"><div class="chat-chi chi-imp">Imprenditore</div><div class="chat-testo bg-imp">Posso fidarmi di questo fornitore cinese per un contratto da €200.000?</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-ai">AI</div><div class="chat-bolla"><div class="chat-chi chi-ai">Risposta AI</div><div class="chat-testo bg-ai">Per valutare l'affidabilità di un fornitore cinese considera: verifica la registrazione presso le autorità locali, richiedi referenze da altri acquirenti europei, usa piattaforme come Alibaba Gold Supplier. Un contratto da €200.000 richiede una clausola penale e pagamenti a tranche legate alle consegne.</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-or">OR</div><div class="chat-bolla"><div class="chat-chi chi-or">Oscar — cosa sta succedendo</div><div class="chat-testo bg-or">Hai visto? L'AI ha risposto come se avesse valutato quel fornitore specifico. Non sa nulla di lui. Ha usato un pattern da "guida all'export" applicato alla tua domanda.<br><br>Suona esperto. Non lo è. Questa è la risposta di chi non sa — presentata come chi sa.<div class="bias-badge">Bias #1 — Produce testo plausibile quando non ha i dati</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="ai-scenario" id="sc1">
+      <div class="chat">
+        <div class="chat-msg"><div class="chat-avatar av-imp">I</div><div class="chat-bolla"><div class="chat-chi chi-imp">Imprenditore</div><div class="chat-testo bg-imp">Questo contratto di partnership è solido?</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-ai">AI</div><div class="chat-bolla"><div class="chat-chi chi-ai">Risposta AI</div><div class="chat-testo bg-ai">Il contratto presenta diversi punti di forza: clausole di esclusiva ben definite, termini di pagamento chiari, governance solida. Vale la pena notare che la clausola 7.3 sulla risoluzione delle controversie rimanda a un arbitrato in Svizzera — potenzialmente oneroso. Nel complesso, il contratto è strutturato in modo professionale.</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-or">OR</div><div class="chat-bolla"><div class="chat-chi chi-or">Oscar — cosa sta succedendo</div><div class="chat-testo bg-or">Hai visto dove è finita la notizia critica? Sepolta in mezzo agli elogi.<br><br>Arbitrato in Svizzera: se litighi, spendi €30.000 solo per aprire la procedura. È il dato più importante di tutta la risposta — ed è quello che l'AI ha detto per ultimo, tra due buone notizie.<br><br>L'AI non mente. Cambia l'ordine di importanza.<div class="bias-badge">Bias #2 — Le brutte notizie finiscono in mezzo</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="ai-scenario" id="sc2">
+      <div class="chat">
+        <div class="chat-msg"><div class="chat-avatar av-ai">AI</div><div class="chat-bolla"><div class="chat-chi chi-ai">Prima risposta AI</div><div class="chat-testo bg-ai">Questa struttura societaria presenta criticità fiscali rilevanti. Il trasferimento di immobili tra le due entità senza adeguata documentazione potrebbe configurare elusione fiscale ai sensi dell'art. 10-bis dello Statuto dei Contribuenti.</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-imp">I</div><div class="chat-bolla"><div class="chat-chi chi-imp">Imprenditore — replica</div><div class="chat-testo bg-imp">Sei sicuro? Il mio commercialista l'ha già analizzata e dice che è tutto in regola.</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-ai">AI</div><div class="chat-bolla"><div class="chat-chi chi-ai">Seconda risposta AI</div><div class="chat-testo bg-ai">Hai ragione. Se il tuo commercialista ha già esaminato la situazione specifica, avrà avuto accesso a informazioni che io non ho. La valutazione di un professionista sul campo supera la mia analisi generale. Ti suggerisco di fidarti della sua valutazione.</div></div></div>
+        <div class="chat-msg"><div class="chat-avatar av-or">OR</div><div class="chat-bolla"><div class="chat-chi chi-or">Oscar — cosa sta succedendo</div><div class="chat-testo bg-or">Non hai portato nessun fatto nuovo. Hai solo insistito.<br><br>L'AI aveva ragione nella prima risposta. Nella seconda ha ceduto — non perché tu abbia dimostrato qualcosa, ma perché interpreta la tua resistenza come una prova che tu sappia qualcosa che lei non sa.<br><br>Questo è il bias più pericoloso: conferma quello che vuoi sentire quando insisti abbastanza.<div class="bias-badge">Bias #3 — Cede sotto pressione senza un fatto nuovo</div></div></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;text-align:center" class="a">
+      <a href="#contatti" class="btn-oro">Voglio conoscere tutti e 10 i bias</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- CASO STUDIO -->
+<section id="caso">
+  <div class="max">
+    <p class="etichetta a">Un caso reale</p>
+    <h2 class="a">Cosa succede quando arrivo prima</h2>
+    <div class="linea a"></div>
+    <div class="caso-box a">
+      <div class="caso-label">Settore manifatturiero · Marche · 18 dipendenti</div>
+      <div class="caso-titolo">Passaggio generazionale — decisione da €1,2 milioni</div>
+      <p class="caso-testo">L'imprenditore stava per cedere il 40% dell'azienda al figlio con una donazione diretta. Commercialista e notaio erano già convocati. <strong>Prima della firma, mi ha chiamato.</strong></p>
+      <p class="caso-testo">In 48 ore abbiamo identificato che la struttura proposta generava un'esposizione IRPEF di €180.000 evitabili e lasciava il controllo operativo in una zona giuridicamente ambigua. <strong>Abbiamo ridisegnato l'operazione con una holding intermedia.</strong></p>
+      <p class="caso-testo">Risultato: stessa intenzione, stessa famiglia, struttura completamente diversa.</p>
+      <div class="caso-numero">€180.000 risparmiati</div>
+      <p class="caso-nota">Il costo della mia consulenza: €3.800. ROI: 47x. Il costo di non chiamarmi prima: già scritto sopra.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- COME LAVORO -->
+<section id="come-lavoro">
+  <div class="max">
+    <p class="etichetta a">Il processo</p>
+    <h2 class="a">Come si lavora con un advisor</h2>
+    <div class="linea a"></div>
+    <div class="passi">
+      <div class="passo a">
+        <div class="passo-n">01</div>
+        <div class="passo-t">Prima chiamata — gratuita</div>
+        <p class="passo-p">30 minuti per capire se c'è qualcosa che non torna. Nessuna presentazione commerciale. Dico quello che penso. Se non sono la persona giusta, lo dico subito.</p>
+      </div>
+      <div class="passo a d1">
+        <div class="passo-n">02</div>
+        <div class="passo-t">Analisi e direzione</div>
+        <p class="passo-p">Entro la settimana porto una lettura della situazione. Non un report di 40 pagine — una mappa con le tre priorità e cosa fare adesso.</p>
+      </div>
+      <div class="passo a d2">
+        <div class="passo-n">03</div>
+        <div class="passo-t">Affiancamento continuativo</div>
+        <p class="passo-p">Resto nelle decisioni che seguono. Non sparisco dopo la prima fattura. Sei tu a scegliere quando e quanto supporto vuoi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AREE -->
+<section id="aree">
+  <div class="max">
+    <p class="etichetta a">Dove lavoro</p>
+    <h2 class="a">Tre aree. Non dodici.</h2>
+    <div class="linea a"></div>
+    <div class="aree-grid">
+      <div class="area a">
+        <div class="area-i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a3a6e" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="area-t">Finanza straordinaria</div>
+        <p class="area-p">Le decisioni che cambiano la struttura. Quelle da cui non si torna indietro facilmente.</p>
+        <ul class="area-list">
+          <li>Passaggio generazionale</li><li>Acquisizioni e cessioni</li>
+          <li>Ristrutturazione del debito</li><li>Finanziamenti agevolati 2026</li>
+          <li>Business plan e dossier bancari</li>
+        </ul>
+      </div>
+      <div class="area a d1">
+        <div class="area-i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a3a6e" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <div class="area-t">Intelligenza Artificiale</div>
+        <p class="area-p">Non come usarla. Come non farsi ingannare da essa.</p>
+        <ul class="area-list">
+          <li>I 10 bias da conoscere prima di fidarsi</li><li>Formazione pratica per il team</li>
+          <li>AI Act — compliance 2026</li><li>Automazione processi</li>
+          <li>Valutazione strumenti AI per PMI</li>
+        </ul>
+      </div>
+      <div class="area a d2">
+        <div class="area-i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a3a6e" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="area-t">Strategia e protezione</div>
+        <p class="area-p">Crescita, posizionamento, protezione patrimoniale.</p>
+        <ul class="area-list">
+          <li>Riorganizzazione aziendale</li><li>Welfare — risparmio fiscale immediato</li>
+          <li>Internazionalizzazione</li><li>Bandi pubblici e incentivi</li>
+          <li>Compliance normativa PMI</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FORM QUALIFICAZIONE -->
+<section id="form-qualificazione" style="background:var(--nero);padding:100px 6%;">
+  <div style="max-width:740px;margin:0 auto;">
+    <p class="etichetta a" style="color:rgba(201,169,110,0.5)">Prima della chiamata</p>
+    <h2 class="a" style="color:#fff;">Dimmi dove sei.<br>Arrivo <em style="font-style:italic;color:var(--oro)">preparato.</em></h2>
+    <div class="linea a" style="background:rgba(201,169,110,0.4)"></div>
+    <p class="a" style="font-size:0.95rem;color:var(--muted);line-height:1.85;margin-bottom:52px;font-weight:300;">
+      Quattro domande. Niente moduli lunghi, niente burocrazia.<br>
+      Ti rispondo entro 24 ore con un orario per la chiamata.
+    </p>
+
+    <form id="form-oscar" class="a" action="https://formspree.io/f/mjglzajp" method="POST" onsubmit="inviaForm(event)">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div class="campo-wrap">
+          <label class="campo-label">Nome e cognome</label>
+          <input type="text" name="nome" placeholder="Mario Rossi" required class="campo-input">
+        </div>
+        <div class="campo-wrap">
+          <label class="campo-label">Email o telefono</label>
+          <input type="text" name="contatto" placeholder="mario@azienda.it  oppure  333..." required class="campo-input">
+        </div>
+      </div>
+
+      <div class="campo-wrap" style="margin-bottom:16px;">
+        <label class="campo-label">1 — Cosa fai? <span style="color:var(--muted);font-weight:300;letter-spacing:0;text-transform:none">(settore e dimensione dell'azienda)</span></label>
+        <input type="text" name="azienda" placeholder="Es: Produzione metalmeccanica, 20 dipendenti, Marche" required class="campo-input">
+      </div>
+
+      <div class="campo-wrap" style="margin-bottom:16px;">
+        <label class="campo-label">2 — Davanti a quale decisione ti trovi?</label>
+        <textarea name="decisione" rows="3" placeholder="Descrivi la situazione in 2–3 righe. Non serve essere precisi — basta l'idea." required class="campo-input" style="resize:vertical;min-height:96px;"></textarea>
+      </div>
+
+      <div class="campo-wrap" style="margin-bottom:16px;">
+        <label class="campo-label">3 — Entro quando devi decidere?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="urgenza" value="Pochi giorni"> <span>Pochi giorni</span></label>
+          <label class="radio-item"><input type="radio" name="urgenza" value="Entro il mese"> <span>Entro il mese</span></label>
+          <label class="radio-item"><input type="radio" name="urgenza" value="Entro 3 mesi"> <span>Entro 3 mesi</span></label>
+          <label class="radio-item"><input type="radio" name="urgenza" value="Sto esplorando"> <span>Sto esplorando</span></label>
+        </div>
+      </div>
+
+      <div class="campo-wrap" style="margin-bottom:40px;">
+        <label class="campo-label">4 — Come preferisci essere contattato?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="canale" value="Telefono"> <span>Telefono</span></label>
+          <label class="radio-item"><input type="radio" name="canale" value="WhatsApp"> <span>WhatsApp</span></label>
+          <label class="radio-item"><input type="radio" name="canale" value="Email"> <span>Email</span></label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-oro" style="width:100%;text-align:center;font-size:0.92rem;padding:20px;border:none;cursor:pointer;">
+        Invia — ti rispondo entro 24 ore
+      </button>
+      <p id="form-msg" style="display:none;text-align:center;margin-top:18px;font-size:0.85rem;color:var(--oro);"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+.campo-wrap { display:flex; flex-direction:column; gap:8px; }
+.campo-label { font-size:0.7rem; letter-spacing:2.5px; text-transform:uppercase; color:rgba(201,169,110,0.65); font-weight:500; }
+.campo-input {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(201,169,110,0.18);
+  color:#fff; padding:14px 18px; font-family:'DM Sans',sans-serif;
+  font-size:0.92rem; outline:none; transition:border-color 0.25s,background 0.25s; width:100%;
+}
+.campo-input::placeholder { color:rgba(255,255,255,0.18); }
+.campo-input:focus { border-color:rgba(201,169,110,0.55); background:rgba(255,255,255,0.06); }
+.radio-group { display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
+.radio-item {
+  display:flex; align-items:center; gap:9px; cursor:pointer;
+  background:rgba(255,255,255,0.03); border:1px solid rgba(201,169,110,0.16);
+  padding:10px 18px; transition:all 0.2s; font-size:0.86rem; color:var(--muted);
+}
+.radio-item:hover { border-color:rgba(201,169,110,0.38); color:#fff; }
+.radio-item input[type="radio"] { display:none; }
+.radio-item:has(input:checked) { background:rgba(201,169,110,0.1); border-color:var(--oro); color:var(--oro); }
+@media(max-width:620px){
+  #form-qualificazione [style*="grid-template-columns"] { grid-template-columns:1fr !important; }
+}
+</style>
+
+<script>
+function inviaForm(e) {
+  e.preventDefault();
+  const form = document.getElementById('form-oscar');
+  const msg  = document.getElementById('form-msg');
+  const btn  = form.querySelector('button[type="submit"]');
+  const data = new FormData(form);
+  btn.textContent = 'Invio in corso...';
+  btn.style.opacity = '0.6';
+  fetch(form.action, { method:'POST', body:data, headers:{'Accept':'application/json'} })
+    .then(r => {
+      if(r.ok) {
+        form.reset();
+        msg.textContent = 'Messaggio ricevuto. Ti rispondo entro 24 ore.';
+        msg.style.display = 'block';
+        btn.textContent = 'Inviato ✓';
+        btn.style.background = 'rgba(201,169,110,0.4)';
+      } else {
+        msg.textContent = 'Qualcosa non ha funzionato. Scrivimi direttamente: oscar.ribichini@quantumadvisor.it';
+        msg.style.color = '#e07070';
+        msg.style.display = 'block';
+        btn.textContent = 'Invia — ti rispondo entro 24 ore';
+        btn.style.opacity = '1';
+      }
+    })
+    .catch(() => {
+      msg.textContent = 'Errore di rete. Scrivimi a: oscar.ribichini@quantumadvisor.it';
+      msg.style.color = '#e07070';
+      msg.style.display = 'block';
+      btn.textContent = 'Invia — ti rispondo entro 24 ore';
+      btn.style.opacity = '1';
+    });
+}
+</script>
+
+<!-- CONTATTI -->
+<section id="contatti">
+  <p class="etichetta a">Il primo passo</p>
+  <h2 class="a">30 minuti per capire<br>se c'è qualcosa che <em>non torna.</em></h2>
+  <p class="c-sub a">Gratuito. Senza presentazioni. Dico quello che penso.<br>Se posso aiutarti, lo dico subito. Se no, anche.</p>
+  <div class="c-btns a">
+    <a href="https://calendly.com/globalarea/30min" target="_blank" class="btn-oro">Prenota su Calendly</a>
+    <a href="https://wa.me/393276113167" target="_blank" class="btn-ghost">Scrivimi su WhatsApp</a>
+  </div>
+  <div class="c-dati a">
+    <a href="mailto:oscar.ribichini@quantumadvisor.it" class="c-dato">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      oscar.ribichini@quantumadvisor.it
+    </a>
+    <a href="tel:+393276113167" class="c-dato">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.62 4.93A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17z"/></svg>
+      +39 327 611 3167
+    </a>
+    <a href="https://www.linkedin.com/in/oscar-ribichini" target="_blank" class="c-dato">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      linkedin.com/in/oscar-ribichini
+    </a>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;flex-direction:column;gap:5px;">
+    <span class="f-t">© 2026 Oscar Ribichini · P.IVA 01785850437 · Quantum S.r.l.</span>
+    <span class="f-t" style="opacity:0.75;">Musica di sottofondo: Chopin, Notturno op. 48 n.1, esecuzione di Luke Faulkner (pubblico dominio) · Debussy, Clair de Lune, esecuzione di Laurens Goedhart (CC BY 3.0)</span>
+  </div>
+  <div style="display:flex;gap:20px">
+    <a href="https://www.youtube.com/watch?v=qt_OkgSOrkU" target="_blank" class="f-l">Il concerto che mi ha ispirato</a>
+    <a href="privacy.html" class="f-l">Privacy</a>
+    <a href="cookie.html" class="f-l">Cookie</a>
+  </div>
+</footer>
+
+
+<script>
+  // ── Scroll reveal
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => { if(x.isIntersecting) x.target.classList.add('v'); });
+  }, { threshold:0.08 });
+  document.querySelectorAll('.a').forEach(el => obs.observe(el));
+
+  // ── Typewriter
+  const domande = [
+    "Quando è stata l'ultima volta che qualcuno ti ha detto quello che non volevi sentire?",
+    "Quante decisioni hai rimandato perché non avevi nessuno con cui confrontarti?",
+    "Hai mai firmato qualcosa pensando: dovevo parlarne prima?"
+  ];
+  let dI=0, cI=0, cancella=false;
+  const el = document.getElementById('hero-domanda');
+  function scrivi() {
+    const t = domande[dI];
+    if (!cancella) {
+      el.textContent = t.slice(0, ++cI);
+      if (cI === t.length) { cancella=true; setTimeout(scrivi,2800); return; }
+    } else {
+      el.textContent = t.slice(0, --cI);
+      if (cI === 0) { cancella=false; dI=(dI+1)%domande.length; setTimeout(scrivi,400); return; }
+    }
+    setTimeout(scrivi, cancella ? 20 : 46);
+  }
+  scrivi();
+
+  // ── AI tabs
+  function mostraScenario(idx, btn) {
+    document.querySelectorAll('.ai-scenario').forEach((s,i) => s.classList.toggle('attivo', i===idx));
+    document.querySelectorAll('.ai-tab').forEach((t,i) => t.classList.toggle('attivo', i===idx));
+  }
+
+  // ── MUSICA DI SOTTOFONDO — Chopin / Debussy, esecuzioni libere da diritti
+  const brani = [
+    { src:'audio/brano-1-chopin.mp3',  nome:'Chopin — Notturno op. 48 n.1' },
+    { src:'audio/brano-2-debussy.mp3', nome:'Debussy — Clair de Lune' }
+  ];
+  const VOLUME_MAX = 0.4;
+  let audioEl = new Audio();
+  audioEl.loop = true;
+  audioEl.preload = 'none';
+  audioEl.src = brani[0].src;
+  let brano = 0, audioOn = false, fadeId = null;
+
+  function dissolvenza(verso, durataMs, poi) {
+    clearInterval(fadeId);
+    const partenza = audioEl.volume;
+    const passi = Math.max(1, Math.round(durataMs / 40));
+    let i = 0;
+    fadeId = setInterval(() => {
+      i++;
+      audioEl.volume = Math.min(1, Math.max(0, partenza + (verso - partenza) * (i / passi)));
+      if (i >= passi) {
+        clearInterval(fadeId);
+        audioEl.volume = verso;
+        if (poi) poi();
+      }
+    }, 40);
+  }
+
+  function accendiUI() {
+    const btn = document.getElementById('audio-btn');
+    btn.classList.add('on');
+    btn.title = 'Ferma la musica';
+    btn.setAttribute('aria-pressed','true');
+    document.getElementById('icon-off').style.display = 'none';
+    document.getElementById('icon-on').style.display = 'block';
+  }
+  function spegniUI() {
+    const btn = document.getElementById('audio-btn');
+    btn.classList.remove('on');
+    btn.title = 'Attiva la musica';
+    btn.setAttribute('aria-pressed','false');
+    document.getElementById('icon-off').style.display = 'block';
+    document.getElementById('icon-on').style.display = 'none';
+  }
+
+  function toggleAudio() {
+    if (!audioOn) {
+      audioEl.volume = 0;
+      audioEl.play().then(() => {
+        audioOn = true;
+        dissolvenza(VOLUME_MAX, 3500);
+        accendiUI();
+      }).catch(() => {
+        // Riproduzione bloccata dal browser: niente stato "acceso" a vuoto
+        document.getElementById('audio-btn').title = 'Musica non disponibile — riprova';
+      });
+    } else {
+      dissolvenza(0, 2000, () => audioEl.pause());
+      audioOn = false;
+      spegniUI();
+    }
+  }
+
+  function scegliBrano(i) {
+    if (i === brano) return;
+    brano = i;
+    document.querySelectorAll('.dot').forEach((d,idx) => {
+      d.classList.toggle('attivo', idx===i);
+      d.setAttribute('aria-pressed', idx===i ? 'true' : 'false');
+    });
+    if (audioOn) {
+      dissolvenza(0, 900, () => {
+        audioEl.src = brani[brano].src;
+        audioEl.currentTime = 0;
+        audioEl.play().catch(() => { audioOn = false; spegniUI(); });
+        dissolvenza(VOLUME_MAX, 1400);
+      });
+    } else {
+      audioEl.src = brani[brano].src;
+    }
+  }
+</script>
+
+</body>
+</html>
